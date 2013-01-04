@@ -1,4 +1,4 @@
-cyrusimap
+Patches para Cyrus Imap
 =========
 
-Scripts e utilitários para o Cyrus Imap
+Patchs para diversas versões do Cyrus Imap, de diversas autorias.
