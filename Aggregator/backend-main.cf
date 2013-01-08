@@ -1,0 +1,25 @@
+# Arquivo de configuração para servidores Backend com Cyrus Aggregator
+# Efetua o relay para o servidor SMTP desejado
+
+
+# Debian specific:  Specifying a file name will cause the first
+smtpd_banner = $myhostname ESMTP
+biff = no
+
+append_dot_mydomain = no
+
+readme_directory = no
+
+myhostname = NOME_DA_MAQUINA
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = NOME_DA_MAQUINA
+
+#ENDERECO DO SERVIDOR SMTP PARA ENCAMINHAR A MENSAGEM
+relayhost = SMTP_PARA_EFETUAR_RELAY
+
+#CONTROLE DE ACESSO, INCLUIR SOMENTE LOCALHOST E IP DO PROPRIO SERVIDOR
+mynetworks = 127.0.0.0/8 IP_REDE_SERVIDOR_BACKEND/32
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
