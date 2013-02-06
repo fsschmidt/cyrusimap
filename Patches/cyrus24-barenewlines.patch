@@ -1,13 +1,13 @@
 — imap/message.c    2012-01-30 18:18:04.381330805 +0000
 +++ imap/message.c.nobarenewline    2012-01-30 18:17:34.929449683 +0000
 @@ -197,8 +197,8 @@ int allow_null;
-r = IMAP_MESSAGE_CONTAINSNULL;
-}
-else if (*p == ‘\n’) {
+  r = IMAP_MESSAGE_CONTAINSNULL;
+  }
+  else if (*p == ‘\n’) {
 -        if (!sawcr && (inheader || !allow_null))
 -            r = IMAP_MESSAGE_CONTAINSNL;
 +        /* Do *NOT* check for RFC compliant line breaks (bare newlines) */
 +        /* if (!sawcr && (inheader || !allow_null)) r = IMAP_MESSAGE_CONTAINSNL; */
-sawcr = 0;
-if (blankline) {
-inheader = 0;
+      sawcr = 0;
+      if (blankline) {
+      inheader = 0;
