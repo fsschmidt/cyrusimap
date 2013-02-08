@@ -1,0 +1,44 @@
+=head2 Wed Feb  6 11:46:40 2013: C<Module> L<Cyrus::IMAP|Cyrus::IMAP>
+
+=over 4
+
+=item *
+
+C<installed into: /usr/share/share/perl/5.10.1>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.00>
+
+=item *
+
+C<EXE_FILES: cyradm>
+
+=back
+
+=head2 Wed Feb  6 11:46:40 2013: C<Module> L<Cyrus::SIEVE::managesieve|Cyrus::SIEVE::managesieve>
+
+=over 4
+
+=item *
+
+C<installed into: /usr/share/share/perl/5.10.1>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

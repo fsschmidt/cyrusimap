@@ -1,0 +1,78 @@
+#!/bin/sh
+#Scrip para instalacao do pacote Cyrus 2.4.17
+#Maintainer: Fabio S. Schmidt <fabio.schmidt@4linux.com.br> 
+
+CONF="/etc/imapd.conf"
+CYRUS_CONFIG_DIR="/var/lib/cyrus"
+[ -r /etc/default/cyrus-imapd ] && . /etc/default/cyrus-imapd
+
+getconf () {
+    if [ -r "${CONF}" ]; then
+        confvalue=$(sed --silent -e "/^[[:blank:]]*${1}:/ { \
+        s#^[[:blank:]]*${1}:[[:blank:]]*## \
+        p
+        }" < "${CONF}" | head -1)
+        result=${confvalue:-$2}
+    else
+        result=${2}
+    fi
+}
+
+
+# Adiciona usuario cyrus
+echo "Criando conta de usuario cyrus..." 
+adduser --quiet --system --ingroup mail --home /var/spool/cyrus \
+   --shell /bin/sh --no-create-home --disabled-password \
+   --gecos "Cyrus Mailsystem User"  cyrus >/dev/null || {
+   if getent passwd | grep -s -q -E '^cyrus:'; then
+           echo "Uma conta de usuario cyrus nao compativel foi encontrada," >&2
+           echo "remova e reinstale o pacote" >&2
+           exit 1
+   fi
+   # qualquer outro erro, simplesmente sai
+   exit 1
+}
+
+ # Force correct owner and modes
+        dpkg-statoverride --list /var/lib/cyrus 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 750 /var/lib/cyrus
+        dpkg-statoverride --list /var/spool/cyrus 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 755 /var/spool/cyrus
+        dpkg-statoverride --list /var/spool/sieve 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 755 /var/spool/sieve
+        dpkg-statoverride --list /var/run/cyrus 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 755 /var/run/cyrus
+        dpkg-statoverride --list /var/run/cyrus/socket 2>&1 >/dev/null ||
+        dpkg-statoverride --list /var/spool/news 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 755 /var/spool/news
+        dpkg-statoverride --list /var/spool/cyrus/news 2>&1 >/dev/null ||
+                dpkg-statoverride --update --add cyrus mail 755 /var/spool/cyrus/news
+                dpkg-statoverride --update --add cyrus mail 750 \
+                                 /var/run/cyrus/socket
+
+
+# Adiciona usuario cyrus ao grupo SASL, se o grupo existir
+adduser cyrus sasl || true
+
+# Add USERDENY database if doesn't exist
+        getconf configdirectory ${CYRUS_CONFIG_DIR}
+        CYRUS_CONFIG_DIR=$result
+
+        userdeny_database="${CYRUS_CONFIG_DIR}/user_deny.db"
+        if [ ! -e ${userdeny_database} ]; then
+            echo -n "Cyrus Imap: Criando base user_deny.db vazia..."
+            touch ${userdeny_database}
+            chmod 600 ${userdeny_database}
+            chown cyrus:mail ${userdeny_database}
+            echo "feito."
+        fi
+
+
+# Adiciona os servicos necessarios no /etc/services
+echo "lmtp 24/tcp #lmtp" >> /etc/services
+echo "mupdate 3905/tcp #mupdate" >> /etc/services
+echo "csync         2005/tcp" >> /etc/services
+
+#
+echo "Instalado"
+exit 0

@@ -1,0 +1,15 @@
+Package: cyrus-imapd
+Version: 2.4.17-08022013
+Architecture: amd64
+Maintainer: Fabio Soares Schmidt <fabio.schmidt@4linux.com.br>
+Installed-Size: 88932
+Depends:  postfix | mail-transport-agent, adduser (>= 3.34), dpkg (>= 1.9.0), netbase (>= 4.07), gawk, libasn1-8-heimdal (>=
+         1.1-2), libc6 (>= 2.7-1), libcomerr2 (>= 1.01), libdb4.8, libgssapi2-heimdal, libkrb5-26-heimdal, libroken18-heimdal,
+         libsasl2-2, libsnmp15 (>= 5.4.1~dfsg), libssl0.9.8 (>= 0.9.8f-5), libwrap0 (>= 7.6-4~), libzephyr4, perl, debconf (>=
+         0.5) | debconf-2.0
+Section: mail
+Priority: extra
+Homepage: http://www.cyrusimap.org/
+Description: Pacote do Cyrus Imap 2.4 para Debian Squeeze
+	Distribuido para a comunidade do Expresso livre por Fabio Schmidt - fabio.schmidt@4linux.com.br
+	Documentacao e artigos sobre o Cyrus em http://respirandolinux.wordpress.com 

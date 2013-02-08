@@ -1,0 +1,11 @@
+/etc/logcheck/violations.ignore.d/cyrus-common-2_4
+/etc/init.d/cyrus-imapd
+/etc/default/cyrus-imapd
+/etc/pam.d/imap.pam
+/etc/pam.d/lmtp.pam
+/etc/pam.d/mupdate.pam
+/etc/pam.d/nntp.pam
+/etc/pam.d/pop.pam
+/etc/pam.d/sieve.pam
+/etc/imapd.conf
+/etc/cyrus.conf

@@ -1,0 +1,12 @@
+/usr/src/pacote/cyrus-2.4.17/usr/share/bin/cyradm
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/Cyrus/IMAP.pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/Cyrus/IMAP/Admin.pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/Cyrus/IMAP/IMSP.pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/Cyrus/IMAP/Shell.pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/auto/Cyrus/IMAP/IMAP.bs
+/usr/src/pacote/cyrus-2.4.17/usr/share/lib/perl/5.10.1/auto/Cyrus/IMAP/IMAP.so
+/usr/src/pacote/cyrus-2.4.17/usr/share/man/man1/cyradm.1p
+/usr/src/pacote/cyrus-2.4.17/usr/share/man/man3/Cyrus::IMAP.3pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/man/man3/Cyrus::IMAP::Admin.3pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/man/man3/Cyrus::IMAP::IMSP.3pm
+/usr/src/pacote/cyrus-2.4.17/usr/share/man/man3/Cyrus::IMAP::Shell.3pm
