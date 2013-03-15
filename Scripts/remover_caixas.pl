@@ -14,7 +14,7 @@ my $matricula = $ARGV[1];
 my $mechanism = "login";
 
 if (!$ARGV[1]) {
-    die "Usage: $0 SENHA MAILBOX SERVIDOR\n";
+    die "Uso: $0 SENHA MAILBOX SERVIDOR\n";
 } else {
     $cyrus_pass = "$ARGV[0]";
 }
