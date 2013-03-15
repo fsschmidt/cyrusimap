@@ -15,7 +15,7 @@ my $matricula = $ARGV[1];
 my $mechanism = "login";
 
 if (!$ARGV[1]) {
-    die "Usage: $0 SENHA MAILBOX SERVIDOR\n";
+    die "Uso: $0 SENHA MAILBOX SERVIDOR\n";
 } else {
     $cyrus_pass = "$ARGV[0]";
 }
@@ -26,7 +26,7 @@ sub aplicapermissao {
     my ($user, $subfolder) = @_;
     my $cyrus = Cyrus::IMAP::Admin->new($cyrus_server);
     $cyrus->authenticate($mechanism,'imap','',$cyrus_user,'0','10000',$cyrus_pass);
-    $cyrus->setaclmailbox("user.$matricula", 'expresso-admin', 'all');
+    $cyrus->setaclmailbox("user.$matricula", 'admin', 'all');
 
     if ($cyrus->error) {
         print STDERR "Error: ", $matricula," ", $cyrus->error, "\n";
