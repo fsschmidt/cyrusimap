@@ -1,0 +1,102 @@
+diff -Naur cyrus-imapd-2.4.17.ori/imap/imapd.c cyrus-imapd-2.4.17/imap/imapd.c
+--- cyrus-imapd-2.4.17.ori/imap/imapd.c 2012-12-01 20:57:54.000000000 +0100
++++ cyrus-imapd-2.4.17/imap/imapd.c     2013-06-26 08:48:46.875175911 +0200
+@@ -308,6 +308,7 @@
+     { "QRESYNC",               2 },
+     { "SCAN",                  2 },
+     { "XLIST",                 2 },
++    { "DIGEST=SHA1",           2 },
+
+ #ifdef HAVE_SSL
+     { "URLAUTH",               2 },
+@@ -4100,6 +4101,13 @@
+            else goto badatt;
+            break;
+
++       case 'D':
++           if (!strcmp(fetchatt.s, "DIGEST.SHA1")) {
++               fetchitems |= FETCH_GUID;
++           }
++           else goto badatt;
++           break;
++
+        case 'E':
+            if (!strcmp(fetchatt.s, "ENVELOPE")) {
+                fetchitems |= FETCH_ENVELOPE;
+@@ -4149,6 +4157,12 @@
+            else if (!strcmp(fetchatt.s, "RFC822.TEXT")) {
+                fetchitems |= FETCH_TEXT|FETCH_SETSEEN;
+            }
++           else if (!strcmp(fetchatt.s, "RFC822.SHA1")) {
++           fetchitems |= FETCH_SHA1;
++           }
++           else if (!strcmp(fetchatt.s, "RFC822.FILESIZE")) {
++           fetchitems |= FETCH_FILESIZE;
++           }
+            else if (!strcmp(fetchatt.s, "RFC822.TEXT.PEEK")) {
+                fetchitems |= FETCH_TEXT;
+            }
+diff -Naur cyrus-imapd-2.4.17.ori/imap/imapd.h cyrus-imapd-2.4.17/imap/imapd.h
+--- cyrus-imapd-2.4.17.ori/imap/imapd.h 2012-12-01 20:57:54.000000000 +0100
++++ cyrus-imapd-2.4.17/imap/imapd.h     2013-06-26 08:49:50.263239084 +0200
+@@ -110,7 +110,10 @@
+     FETCH_SETSEEN =             (1<<10),
+ /*     FETCH_UNCACHEDHEADER =      (1<<11) -- obsolete */
+     FETCH_IS_PARTIAL =          (1<<12), /* this is the PARTIAL command */
+-    FETCH_MODSEQ =             (1<<13)
++    FETCH_MODSEQ =             (1<<13),
++    FETCH_GUID   =             (1<<14),
++    FETCH_SHA1   =             (1<<15),
++    FETCH_FILESIZE =           (1<<16)
+ };
+
+ enum {
+diff -Naur cyrus-imapd-2.4.17.ori/imap/index.c cyrus-imapd-2.4.17/imap/index.c
+--- cyrus-imapd-2.4.17.ori/imap/index.c 2012-12-01 20:57:54.000000000 +0100
++++ cyrus-imapd-2.4.17/imap/index.c     2013-06-26 08:54:00.585180737 +0200
+@@ -2471,7 +2471,7 @@
+     }
+
+     /* Open the message file if we're going to need it */
+-    if ((fetchitems & (FETCH_HEADER|FETCH_TEXT|FETCH_RFC822)) ||
++    if ((fetchitems & (FETCH_HEADER|FETCH_TEXT|FETCH_SHA1|FETCH_RFC822)) ||
+        fetchargs->cache_atleast > im->record.cache_version ||
+        fetchargs->binsections || fetchargs->sizesections ||
+        fetchargs->bodysections) {
+@@ -2498,6 +2498,10 @@
+        prot_printf(state->out, "%cUID %u", sepchar, im->record.uid);
+        sepchar = ' ';
+     }
++    if (fetchitems & FETCH_GUID) {
++       prot_printf(state->out, "%cDIGEST.SHA1 %s", sepchar,message_guid_encode(&im->record.guid));
++       sepchar = ' ';
++    }
+     if (fetchitems & FETCH_INTERNALDATE) {
+        time_t msgdate = im->record.internaldate;
+        char datebuf[30];
+@@ -2518,6 +2522,25 @@
+                    sepchar, im->record.size);
+        sepchar = ' ';
+     }
++    if (fetchitems & FETCH_FILESIZE) {
++       if (!msg_base) {
++               char *fname = mailbox_message_fname(mailbox, im->record.uid);
++               struct stat sbuf;
++               /* Find the size of the message file */
++               if (stat(fname, &sbuf) == -1)
++               syslog(LOG_ERR, "IOERROR: stat on %s: %m", fname);
++        else
++               msg_size = sbuf.st_size;
++        }
++       prot_printf(state->out, "%cRFC822.FILESIZE %lu", sepchar, msg_size);
++       sepchar = ' ';
++    }
++    if (fetchitems & FETCH_SHA1) {
++       struct message_guid tmpguid;
++       message_guid_generate(&tmpguid, msg_base, msg_size);
++       prot_printf(state->out, "%cRFC822.SHA1 %s", sepchar, message_guid_encode(&tmpguid));
++       sepchar = ' ';
++    }
+     if (fetchitems & FETCH_ENVELOPE) {
+         if (!mailbox_cacherecord(mailbox, &im->record)) {
+            prot_printf(state->out, "%cENVELOPE ", sepchar);
