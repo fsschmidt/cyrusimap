@@ -1,0 +1,11 @@
+--- cyrus-imapd-2.4.17/imap/userdeny_db.c.x	2013-05-06 09:24:46.730955370 +0100
++++ cyrus-imapd-2.4.17/imap/userdeny_db.c	2013-05-06 09:25:19.624517124 +0100
+@@ -81,7 +81,7 @@
+     if (!deny_dbopen) return 0;
+ 
+     /* fetch entry for user */
+-    syslog(LOG_DEBUG, "fetching user_deny.db entry for '%s'", user);
++    /* syslog(LOG_DEBUG, "fetching user_deny.db entry for '%s'", user); */
+     do {
+ 	r = DENYDB->fetch(denydb, user, strlen(user), &data, &datalen, NULL);
+     } while (r == CYRUSDB_AGAIN);
