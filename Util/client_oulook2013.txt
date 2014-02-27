@@ -1,0 +1,12 @@
+altnamespace: yes
+autocreatequota: -1  #it can be a positive value.
+allowplaintext: yes
+sasl_mech_list: PLAIN
+sasl_pwcheck_method: saslauthd
+#end of file:
+xlist-drafts: Drafts
+xlist-archive: Archive
+xlist-sent: Sent Items
+xlist-trash: Deleted Items
+xlist-junk: Junk E-mail
+xlist-spam: Junk E-mail
