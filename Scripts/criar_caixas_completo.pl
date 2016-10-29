@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-#Autor: Fabio S. Schmidt <fabio.schmidt@4linux.com.br>
+#Autor: Fabio S. Schmidt <fabio@bktech.com.br>
 #Script para CRIAR caixas postais do Cyrus Imap
 #definindo permissao na caixa criada para o admin
 #definindo a quota
