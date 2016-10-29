@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-#Autor: Fabio S. Schmidt <fabio.schmidt@4linux.com.br>
+#Autor: Fabio S. Schmidt <fabio@bktech.com.br>
 #Script para CRIAR caixas postais do Cyrus Imap
 
 use Cyrus::IMAP::Admin;
